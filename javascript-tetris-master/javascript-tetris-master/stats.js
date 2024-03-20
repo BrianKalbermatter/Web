@@ -8,7 +8,61 @@ var Stats = function () {
         for (c = 0; c < 30; c++)
             e = (73 + c * 74) * 4,
             c < g ? (a[e] = b[d].bg.r, a[e + 1] = b[d].bg.g, a[e + 2] = b[d].bg.b) : (a[e] = b[d].fg.r, a[e + 1] = b[d].fg.g, a[e + 2] = b[d].fg.b)
-    }
+    
+
+        var isPaused = false; // Variable para controlar si el juego está pausado o no
+
+        // Función para alternar entre pausado y no pausado
+        function togglePause() {
+            isPaused = !isPaused;
+        }
+
+
+
+
+
+
+
+
+    
+        // Agregar evento de clic para pausar/despausar el juego
+        g.addEventListener("click", function () {
+            togglePause();
+        }, !1);
+    
+        // Función de actualización modificada para tener en cuenta la pausa
+        return {
+            // Resto del código de la función update() aquí...
+            update: function () {
+                if (!isPaused) { // Solo actualiza si el juego no está pausado
+                    u++;
+                    j = (new Date).getTime();
+                    n = j - F;
+                    z = Math.min(z, n);
+                    A = Math.max(A, n);
+                    s(B.data, Math.min(30, 30 - n / 200 * 30), "ms");
+                    c.innerHTML = '<span style="font-weight:bold">' + n + " MS</span> (" + z + "-" + A + ")";
+                    o.putImageData(B, 0, 0);
+                    F = j;
+                    if (j > v + 1E3) {
+                        l = Math.round(u * 1E3 / (j - v));
+                        w = Math.min(w, l);
+                        x = Math.max(x, l);
+                        s(y.data, Math.min(30, 30 - l / 100 * 30), "fps");
+                        d.innerHTML = '<span style="font-weight:bold">' + l + " FPS</span> (" + w + "-" + x + ")";
+                        m.putImageData(y, 0, 0);
+                        if (t == 3) p = performance.memory.usedJSHeapSize * 9.54E-7, C = Math.min(C, p), D = Math.max(D, p), s(E.data, Math.min(30, 30 - p / 2), "mb"), i.innerHTML = '<span style="font-weight:bold">' + Math.round(p) + " MB</span> (" + Math.round(C) + "-" + Math.round(D) + ")", q.putImageData(E, 0, 0);
+                        v = j;
+                        u = 0
+                    }
+                }
+            }
+        }
+    };  
+
+
+
+
     var r = 0,
         t = 2,
         g, u = 0,
