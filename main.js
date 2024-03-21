@@ -61,7 +61,7 @@ function preload() {
     mifuente = loadFont("./images/GeBody.ttf");
 }
 function setup() {
-    createCanvas(1000, 1000);
+    createCanvas(600, 400);
     // Obtener el nombre ingresado por el usuario
     nombre = document.getElementById("nombreInput").value;
     dino = new Dinosaurios();
