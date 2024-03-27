@@ -3,58 +3,9 @@ var pepa;
 var piwicho;
 var gameOver = false;
 var valor;
-var puntaje
+var puntaje = 0;
+var muertes = 0; // Contador de muertes
 var mifuente;
-//LocalStorage
-
-
-//obtener_localstorage();
-//function obtener_localstorage() {
-//    if (localStorage.getItem("nombre") && localStorage.getItem("puntaje")) {
-//        //se que existe en el localstorage 
-//        let nombre = localStorage.getItem("nombre");
-//        let puntajeGuardado = JSON.parse(localStorage.getItem("puntaje"));
-
-//        console.log("Nombre: " + nombre);
-//        console.log("Puntaje guardado: " + puntajeGuardado);
-//    } else {
-//        console.log("No hay entradas en el local storage");
-//    }
-
-//}
-
-
-function guardar_localstorage() {
-    // Obtener el nombre ingresado por el usuario
-    nombre = document.getElementById("nombreInput").value;
-
-    // Obtener el puntaje anterior del LocalStorage
-    var puntajeAnterior = localStorage.getItem("puntaje");
-
-    // Si hay un puntaje anterior, comparar y guardar el máximo entre el puntaje actual y el anterior
-    if (puntajeAnterior !== null) {
-        puntaje = Math.max(puntaje, parseInt(puntajeAnterior));
-    }
-    // Guardar el nombre ingresado por el usuario en el LocalStorage
-    localStorage.setItem("nombre", nombre);
-    // Guardar también el puntaje
-    localStorage.setItem("puntaje", puntaje);
-}
-function obtener_localstorage() {
-    // Verificar si hay datos en LocalStorage
-    if (localStorage.getItem("nombre") && localStorage.getItem("puntaje")) {
-        let nombre = localStorage.getItem("nombre");
-        let puntajeGuardado = parseInt(localStorage.getItem("puntaje"));
-
-        console.log("Nombre: " + nombre);
-        console.log("Último puntaje guardado: " + puntajeGuardado);
-    } else {
-        console.log("No hay datos guardados en el LocalStorage.");
-    }
-}
-
-
-
 
 
 function preload() {
@@ -62,8 +13,6 @@ function preload() {
 }
 function setup() {
     createCanvas(600, 400);
-    // Obtener el nombre ingresado por el usuario
-    nombre = document.getElementById("nombreInput").value;
     dino = new Dinosaurios();
     pepa = new Cactus();
     piwicho = new Aves();
@@ -73,8 +22,7 @@ function setup() {
     youLose = loadImage("./images/gameOver.png");
     valor = 1
     puntaje = 0;
-
-    guardar_localstorage()
+    recuperarMuertes();
 }
 
 function draw() {
@@ -91,6 +39,13 @@ function draw() {
     if (gameOver == false && dino.partida == true) {
         puntaje++;
     } else { puntaje = puntaje; }
+
+    // Incrementar el contador de muertes si el juego termina
+    if (gameOver) {
+        muertes++;
+        guardarMuertes();
+    }
+
     //todo lo relacionado al texto de puntaje
     textFont(mifuente);
     textSize(26);
@@ -113,6 +68,12 @@ function juegoTerminado() {
     gameOver = true;
     updateSprites(false);
     valor = 1;
+
+    guardarPuntaje(); // Llamada para guardar el puntaje en localStorage
+    if (gameOver) {
+        muertes++; // Incrementar el contador de muertes solo si el juego termina
+        guardarMuertes(); // Llamada para guardar el contador de muertes en localStorage
+    }
 }
 
 function juegoNuevo() {
@@ -128,10 +89,51 @@ function juegoNuevo() {
     dino.lagartija.animation.rewind();
     dino.reset.hide();
     puntaje = 0;
-
+    recuperarPuntaje(); // Llamada para recuperar el puntaje del localStorage
 }
-function keyPressed() {
-    if (keyCode === UP_ARROW) {
-        dino.saltar(); // Función para hacer que el dinosaurio salte
+
+
+
+
+
+
+
+//LocalStorage
+//MUERTES
+// Función para guardar el contador de muertes en el localStorage
+function guardarMuertes() {
+    localStorage.setItem('muertes', muertes);
+}
+
+// Función para recuperar el contador de muertes del localStorage
+function recuperarMuertes() {
+    var storedDeaths = localStorage.getItem('muertes');
+    if (storedDeaths) {
+        muertes = parseInt(storedDeaths); // Convertir a número si hay muertes almacenadas
+    } else {
+        muertes = 0; // Establecer el contador de muertes en 0 si no hay ninguno almacenado
     }
 }
+
+
+
+
+//PUNTOS
+// Función para guardar el puntaje en el localStorage
+function guardarPuntaje() {
+    localStorage.setItem('puntos', puntaje);
+    console.log(puntaje);
+}
+
+// Función para recuperar el puntaje del localStorage
+function recuperarPuntaje() {
+    var storedScore = localStorage.getItem('puntos');
+    if (storedScore) {
+        puntaje = parseInt(storedScore); // Convertir a número si hay un puntaje almacenado
+    } else {
+        puntaje = 0; // Establecer el puntaje en 0 si no hay ninguno almacenado
+    }
+}
+
+
+//---------------------------------------------------------
