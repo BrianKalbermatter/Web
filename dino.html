@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" type="image/png" href="./images/favicon.png">
+  <style>
+    .ranking {
+      background-color: #aca6a6;
+      float: right;
+      padding: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+  <title>Dino-Google</title>
+</head>
+
+<body>
+  <div class="ranking">
+    <table id="rankingTable">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Puntaje</th>
+          <th>Muertes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Player scores will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script type="text/javascript" src="p5.js"></script>
+  <script type="text/javascript" src="p5.dom.js"></script>
+  <script type="text/javascript" src="p5.play.js"></script>
+  <script type="text/javascript" src="p5.sound.js"></script>
+  <script type="text/javascript" src="dino.js"></script>
+  <script type="text/javascript" src="cactus.js"></script>
+  <script type="text/javascript" src="bird.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+
+  <script>
+    window.onload = function () {
+      if (gameOver) {
+        juegoNuevo();
+      }
+
+      // Function to update the ranking table with player scores
+      function updateRankingTable() {
+        var tableBody = document.getElementById("rankingTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = ""; // Clear existing table rows
+
+        // Get player scores from localStorage
+        var players = JSON.parse(localStorage.getItem("players")) || [];
+
+        // Iterate over player scores and add them to the table
+        players.forEach(function (player) {
+          var row = tableBody.insertRow();
+          row.insertCell(0).innerHTML = player.nombre;
+          row.insertCell(1).innerHTML = player.puntaje;
+          row.insertCell(2).innerHTML = player.muertes;
+        });
+      }
+
+      // Call the function initially to populate the table
+      updateRankingTable();
+    };
+  </script>
+
+</body>
+
+</html>
