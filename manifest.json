@@ -1,7 +1,7 @@
 {
   "name": "DinoGoogle2D",
   "short_name": "DinoGoogle",
-  "start_url": "/dino.html",
+  "start_url": "Web/dino.html",
   "display": "standalone",
   "icons": [
     {
