@@ -5,6 +5,11 @@
   "display": "standalone",
   "icons": [
     {
+      "src": "Square44x44Logo.altform-lightunplated_targetsize-32.png",
+      "sizes": "512x512",
+      "type": "windows11/png"
+    },
+    {
       "sizes": "114x114",
       "src": "https://github.githubassets.com/assets/apple-touch-icon-114x114-09ce42d3ca4b.png"
     },
