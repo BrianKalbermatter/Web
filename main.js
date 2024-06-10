@@ -7,6 +7,7 @@ var valor;
 var puntaje = 0;
 var muertes = 0;
 var mifuente;
+var touchCount = 0;
 
 // Preload function
 function preload() {
@@ -207,3 +208,41 @@ if ("vibrate" in navigator) {
 } else {
     console.log("La API de vibración NO está disponible");
 }
+
+// Variable para rastrear el estado del juego (iniciado o reiniciado)
+var juegoIniciado = false;
+
+// Función para manejar los toques en la pantalla
+function touchStarted() {
+    // Si el juego no ha sido iniciado, inicia el juego con un toque
+    if (!juegoIniciado) {
+        iniciarJuego();
+        juegoIniciado = true;
+    } else {
+        // Si el juego ya ha sido iniciado, cuenta los toques para reiniciar
+        reiniciarJuego();
+    }
+    
+    // Evita que se realice un desplazamiento en la página al tocar la pantalla
+    return false;
+}
+
+// Función para iniciar el juego con un solo toque
+function iniciarJuego() {
+    jugadorSalta(); // Llama a la función para que el jugador salte
+}
+
+// Función para reiniciar el juego con dos toques
+function reiniciarJuego() {
+    // Incrementa el contador de toques
+    touchCount++;
+
+    // Si se detectan dos toques consecutivos, reinicia el juego
+    if (touchCount === 2) {
+        juegoNuevo(); // Llama a la función para reiniciar el juego
+        touchCount = 0; // Reinicia el contador de toques
+    }
+}
+
+
+
