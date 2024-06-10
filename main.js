@@ -83,8 +83,11 @@ function juegoTerminado() {
 
     // Activar la vibración si la API está disponible
     if (navigator.vibrate) {
+        console.log("¡El dispositivo está vibrando!");
         navigator.vibrate(300);  // Vibra durante 300 ms
     }
+    // Lanza un mensaje en la consola indicando que el dispositivo está vibrando
+    console.log("¡El dispositivo está vibrando!");
 }
 
 // Function to start a new game
