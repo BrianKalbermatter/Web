@@ -7,7 +7,7 @@ var valor;
 var puntaje = 0;
 var muertes = 0;
 var mifuente;
-var touchCount = 0;
+
 
 // Preload function
 function preload() {
@@ -113,6 +113,7 @@ function juegoNuevo() {
             // Reset game variables
             puntaje = 0;
             muertes = 0;
+            touchCount = 0; // Reinicia el contador de toques
 
             // Save updated player scores to localStorage
             localStorage.setItem("players", JSON.stringify(players));
@@ -122,6 +123,8 @@ function juegoNuevo() {
         }
     }
 }
+
+
 
 // Function to save deaths in LocalStorage
 function guardarMuertes() {
