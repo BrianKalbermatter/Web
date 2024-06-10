@@ -26,6 +26,9 @@ function setup() {
     valor = 1;
     puntaje = 0;
     recuperarMuertes();
+
+    // Iniciar detección de movimiento del dispositivo
+    iniciarDeteccionDeMovimiento();
 }
 
 // Draw function
@@ -41,10 +44,9 @@ function draw() {
     piwicho.movimiento(dino);
     pepa.muerte(dino);
     piwicho.muerte(dino);
-    if (gameOver == false && dino.partida == true) {
+
+    if (!gameOver && dino.partida) {
         puntaje++;
-    } else {
-        puntaje = puntaje;
     }
 
     if (gameOver) {
@@ -57,8 +59,8 @@ function draw() {
     textStyle(BOLD);
     fill(90);
     text(puntaje, dino.lagartija.position.x + 350, 50, 200, 40);
-    text("Puntos", dino.lagartija.position.x + 250, 50, 200, 40)
-    //
+    text("Puntos", dino.lagartija.position.x + 250, 50, 200, 40);
+
     drawSprites();
 }
 
@@ -77,10 +79,13 @@ function juegoTerminado() {
     valor = 1;
 
     guardarPuntaje();
+
+    // Activar la vibración si la API está disponible
+    if (navigator.vibrate) {
+        navigator.vibrate(300);  // Vibra durante 300 ms
+    }
 }
 
-// Function to start a new game
-// Function to start a new game
 // Function to start a new game
 function juegoNuevo() {
     if (!gameOver) {
@@ -116,7 +121,6 @@ function juegoNuevo() {
         }
     }
 }
-
 
 // Function to save deaths in LocalStorage
 function guardarMuertes() {
@@ -163,4 +167,43 @@ function guardarDatosEnJson(puntaje, muertes, nombre) {
     const fileName = `${nombre}.json`;
     // No need to save in a file, just saving to LocalStorage
     localStorage.setItem(fileName, json);
+}
+
+// Detectar la inclinación del dispositivo para hacer saltar al jugador
+function iniciarDeteccionDeMovimiento() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    window.addEventListener('deviceorientation', manejarOrientacionDelDispositivo, true);
+                }
+            })
+            .catch(console.error);
+    } else {
+        window.addEventListener('deviceorientation', manejarOrientacionDelDispositivo, true);
+    }
+}
+
+function manejarOrientacionDelDispositivo(evento) {
+    const beta = evento.beta;   // Inclinación adelante-atrás en grados
+
+    // Detectar inclinación hacia adelante
+    if (beta > 30 && !gameOver) { // Ajusta el umbral según tus necesidades
+        jugadorSalta();
+    }
+}
+
+// Función para manejar el salto del jugador
+function jugadorSalta() {
+    console.log("¡El jugador ha saltado!");
+    // Lógica para hacer saltar al jugador
+    // Aquí puedes actualizar la posición del personaje o activar una animación de salto
+    dino.saltar();
+}
+
+// Verificar si la API de vibración está disponible
+if ("vibrate" in navigator) {
+    console.log("La API de vibración está disponible");
+} else {
+    console.log("La API de vibración NO está disponible");
 }
